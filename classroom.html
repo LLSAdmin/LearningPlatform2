@@ -188,11 +188,13 @@
             flex: 1;
             display: flex;
             overflow: hidden;
+            padding: 12px;
+            gap: 12px;
         }
 
         /* Video Section */
         .video-section {
-            width: 25%;
+            width: 22%;
             display: flex;
             flex-direction: column;
             background: #f8f9fa;
@@ -208,6 +210,10 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
+        /* Make teacher video slightly larger than student */
+        .video-section .video-container:first-child { flex: 1.2; }
+        .video-section .video-container:last-child { flex: 0.8; }
 
         .video-container video {
             width: 100%;
@@ -299,6 +305,10 @@
             background: #ffffff;
             cursor: crosshair;
             position: relative;
+            margin: 8px 12px 12px 12px;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         #whiteboard {
@@ -310,7 +320,9 @@
 
         /* Chat Section */
         .chat-section {
-            width: 300px;
+            width: 255px; /* 75% of 340px */
+            height: 75%;
+            align-self: center;
             display: flex;
             flex-direction: column;
             background: #ffffff;
