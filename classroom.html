@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom - Leonor Language School</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #66ccff 0%, #ffffff 100%);
+            color: #333;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: #ffffff;
+            padding: 16px 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .class-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .class-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .class-details {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .class-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .timer {
+            background: #f8f9fa;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #666;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background: #ff99cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-btn:hover {
+            background: #ff88bb;
+            transform: translateY(-1px);
+        }
+
+        /* Class Status Button States */
+        .dropdown-btn.status-not-started {
+            background: #6c757d;
+        }
+
+        .dropdown-btn.status-not-started:hover {
+            background: #5a6268;
+        }
+
+        .dropdown-btn.status-in-progress {
+            background: #28a745;
+        }
+
+        .dropdown-btn.status-in-progress:hover {
+            background: #218838;
+        }
+
+        .dropdown-btn.status-ended {
+            background: #dc3545;
+        }
+
+        .dropdown-btn.status-ended:hover {
+            background: #c82333;
+        }
+
+        .status-icon {
+            font-size: 8px;
+            margin-right: 8px;
+        }
+
+        .status-icon.not-started {
+            color: #6c757d;
+        }
+
+        .status-icon.in-progress {
+            color: #28a745;
+        }
+
+        .status-icon.ended {
+            color: #dc3545;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        .dropdown-item.danger {
+            color: #dc3545;
+        }
+
+        .dropdown-item.danger:hover {
+            background: #fff5f5;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Video Section */
+        .video-section {
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+        }
+
+        .video-container {
+            flex: 1;
+            position: relative;
+            margin: 8px;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 14px;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .video-label {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Whiteboard Section */
+        .whiteboard-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .whiteboard-toolbar {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #f8f9fa;
+        }
+
+        .tool-btn {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tool-btn.active {
+            background: #ff99cc;
+            color: white;
+            border-color: #ff99cc;
+        }
+
+        .tool-btn:hover {
+            border-color: #ff99cc;
+            color: #ff99cc;
+        }
+
+        .tool-btn.active:hover {
+            background: #ff88bb;
+            color: white;
+        }
+
+        .color-picker {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .whiteboard-canvas {
+            flex: 1;
+            background: #ffffff;
+            cursor: crosshair;
+            position: relative;
+        }
+
+        #whiteboard {
+            border: none;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        /* Chat Section */
+        .chat-section {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            border-left: 1px solid #e9ecef;
+        }
+
+        .chat-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e9ecef;
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-message {
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-width: 85%;
+            word-wrap: break-word;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .chat-message.sent {
+            background: #ff99cc;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-message.received {
+            background: #f1f3f4;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-message .sender {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 2px;
+            opacity: 0.8;
+        }
+
+        .chat-input {
+            padding: 16px;
+            border-top: 1px solid #e9ecef;
+            background: #f8f9fa;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .chat-input input:focus {
+            border-color: #ff99cc;
+        }
+
+        .chat-send-btn {
+            padding: 10px 12px;
+            background: #ff99cc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .chat-send-btn:hover {
+            background: #ff88bb;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 32px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #ff99cc;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #ff99cc;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff88bb;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #dee2e6;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        /* Status indicators */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-indicator.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-indicator.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .video-section {
+                width: 30%;
+            }
+            .chat-section {
+                width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .video-section {
+                width: 100%;
+                height: 200px;
+                flex-direction: row;
+            }
+            .chat-section {
+                width: 100%;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <img src="https://www.leonorlanguageschool.com/LLS/images/2025Logo.jpg" alt="Leonor Language School">
+            </div>
+            
+            <div class="class-info">
+                <div>
+                    <div class="class-name" id="className">Loading...</div>
+                    <div class="class-details" id="classDetails">Loading...</div>
+                </div>
+            </div>
+            
+            <div class="class-controls">
+                <div class="timer" id="timer">00:00:00</div>
+                
+                <div class="dropdown">
+                    <button class="dropdown-btn" id="classStatusBtn" onclick="toggleClassStatusDropdown()">
+                        <i class="fas fa-circle" id="statusIcon"></i>
+                        <span id="statusText">Not Started</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content" id="classStatusDropdown">
+                        <div class="dropdown-item" onclick="startClass()">
+                            <i class="fas fa-play"></i>
+                            Start Class
+                        </div>
+                        <div class="dropdown-item" onclick="endClass()">
+                            <i class="fas fa-stop"></i>
+                            End Class
+                        </div>
+                        <div class="dropdown-item" onclick="resetClassStatus()">
+                            <i class="fas fa-redo"></i>
+                            Reset Class Status
+                        </div>
+                        <div class="dropdown-item" onclick="leaveClass()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Leave Class
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Video Section -->
+            <div class="video-section">
+                <div class="video-container">
+                    <div class="video-placeholder" id="localVideoPlaceholder">
+                        <i class="fas fa-video fa-2x"></i>
+                        <span>Your Camera</span>
+                    </div>
+                    <video id="localVideo" autoplay muted></video>
+                    <div class="video-label">Teacher</div>
+                </div>
+                
+                <div class="video-container">
+                    <div class="video-placeholder" id="remoteVideoPlaceholder">
+                        <i class="fas fa-user fa-2x"></i>
+                        <span>Student Camera</span>
+                    </div>
+                    <video id="remoteVideo" autoplay></video>
+                    <div class="video-label">Student</div>
+                </div>
+            </div>
+
+            <!-- Whiteboard Section -->
+            <div class="whiteboard-section">
+                <div class="whiteboard-toolbar">
+                    <button class="tool-btn active" onclick="setTool('pen')">
+                        <i class="fas fa-pen"></i>
+                        Pen
+                    </button>
+                    <button class="tool-btn" onclick="setTool('eraser')">
+                        <i class="fas fa-eraser"></i>
+                        Eraser
+                    </button>
+                    <input type="color" class="color-picker" id="colorPicker" value="#000000" onchange="setColor(this.value)">
+                    <button class="tool-btn" onclick="clearWhiteboard()">
+                        <i class="fas fa-trash"></i>
+                        Clear
+                    </button>
+                    <button class="tool-btn" onclick="exportToPDF()">
+                        <i class="fas fa-file-pdf"></i>
+                        Export PDF
+                    </button>
+                    <button class="tool-btn" onclick="toggleScreenShare()">
+                        <i class="fas fa-desktop"></i>
+                        Share Screen
+                    </button>
+                </div>
+                
+                <div class="whiteboard-canvas">
+                    <canvas id="whiteboard" width="800" height="600"></canvas>
+                </div>
+            </div>
+
+            <!-- Chat Section -->
+            <div class="chat-section">
+                <div class="chat-header">
+                    <i class="fas fa-comments"></i>
+                    Class Chat
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-message received">
+                        <div class="sender">System</div>
+                        Welcome to the class! You can start chatting now.
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatKeyPress(event)">
+                    <button class="chat-send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Class Feedback</div>
+                <div class="modal-subtitle">Please provide feedback for this class session</div>
+            </div>
+            
+            <form id="feedbackForm">
+                <div class="form-group">
+                    <label class="form-label">Student Progress</label>
+                    <textarea class="form-textarea" id="progress" placeholder="How did the student perform? What areas need improvement?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Lesson Notes</label>
+                    <textarea class="form-textarea" id="notes" placeholder="What was covered in this lesson?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Homework Assignment</label>
+                    <textarea class="form-textarea" id="homework" placeholder="What homework should the student complete?"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeFeedbackModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Feedback</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="classroom.js"></script>
+</body>
+</html>
+
