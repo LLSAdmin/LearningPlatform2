@@ -103,26 +103,6 @@ io.on('connection', (socket) => {
 
         console.log(`User ${socket.id} joined session ${classId} as ${incomingRole}`);
     });
-        userSessions.set(socket.id, currentSession);
-        
-        // Send session info to user
-        socket.emit('session joined', {
-            sessionId: sessionId,
-            role: role,
-            participants: {
-                teacher: session.teacher,
-                student: session.student
-            }
-        });
-        
-        // Notify other participants
-        socket.to(currentSession).emit('user joined', {
-            userId: socket.id,
-            role: role
-        });
-        
-        console.log(`User ${socket.id} joined session ${currentSession} as ${userRole}`);
-    });
     
     // Chat messages
     socket.on('chat message', (data) => {
