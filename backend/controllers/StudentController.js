@@ -2,14 +2,10 @@
 const StudentService = require('../services/StudentService');
 
 class StudentController {
-    constructor() {
-        this.studentService = new StudentService();
-    }
-
     // Obtener todos los estudiantes
     async getAllStudents(req, res) {
         try {
-            const students = await this.studentService.getAllStudents();
+            const students = await StudentService.getAllStudents();
             res.json(students);
         } catch (error) {
             console.error('Error in getAllStudents:', error);
@@ -24,7 +20,7 @@ class StudentController {
     async getStudentById(req, res) {
         try {
             const { id } = req.params;
-            const student = await this.studentService.getStudentById(id);
+            const student = await StudentService.getStudentById(id);
             
             if (!student) {
                 return res.status(404).json({ error: 'Estudiante no encontrado' });
@@ -43,8 +39,18 @@ class StudentController {
     // Crear nuevo estudiante
     async createStudent(req, res) {
         try {
-            const studentData = req.body;
-            const newStudent = await this.studentService.createStudent(studentData);
+            const { full_name, level, email, phone } = req.body;
+            
+            // Validar que se envíen los campos requeridos
+            if (!full_name || !level) {
+                return res.status(400).json({
+                    error: 'Datos incompletos',
+                    message: 'Se requieren los campos: full_name, level'
+                });
+            }
+
+            const studentData = { full_name, level, email, phone };
+            const newStudent = await StudentService.createStudent(studentData);
             
             res.status(201).json({
                 message: 'Estudiante creado exitosamente',
@@ -71,9 +77,18 @@ class StudentController {
     async updateStudent(req, res) {
         try {
             const { id } = req.params;
-            const updateData = req.body;
+            const { full_name, level, email, phone } = req.body;
             
-            const updatedStudent = await this.studentService.updateStudent(id, updateData);
+            // Validar que se envíen los campos requeridos
+            if (!full_name || !level) {
+                return res.status(400).json({
+                    error: 'Datos incompletos',
+                    message: 'Se requieren los campos: full_name, level'
+                });
+            }
+
+            const updateData = { full_name, level, email, phone };
+            const updatedStudent = await StudentService.updateStudent(id, updateData);
             
             res.json({
                 message: 'Estudiante actualizado exitosamente',
@@ -107,7 +122,7 @@ class StudentController {
     async deleteStudent(req, res) {
         try {
             const { id } = req.params;
-            await this.studentService.deleteStudent(id);
+            await StudentService.deleteStudent(id);
             
             res.json({ 
                 message: 'Estudiante eliminado exitosamente',
@@ -134,7 +149,7 @@ class StudentController {
     async getStudentsByLevel(req, res) {
         try {
             const { level } = req.params;
-            const students = await this.studentService.getStudentsByLevel(level);
+            const students = await StudentService.getStudentsByLevel(level);
             
             res.json({
                 level,
@@ -149,6 +164,63 @@ class StudentController {
             });
         }
     }
+
+    // Buscar estudiantes por email
+    async getStudentByEmail(req, res) {
+        try {
+            const { email } = req.params;
+            const student = await StudentService.getStudentByEmail(email);
+            
+            if (!student) {
+                return res.status(404).json({ error: 'Estudiante no encontrado' });
+            }
+            
+            res.json(student);
+        } catch (error) {
+            console.error('Error in getStudentByEmail:', error);
+            res.status(500).json({ 
+                error: 'Error interno del servidor',
+                message: error.message 
+            });
+        }
+    }
+
+    // Buscar estudiantes por nombre
+    async searchStudentsByName(req, res) {
+        try {
+            const { name } = req.query;
+            
+            if (!name) {
+                return res.status(400).json({
+                    error: 'Parámetro requerido',
+                    message: 'Se requiere el parámetro "name" para buscar'
+                });
+            }
+
+            const students = await StudentService.searchStudentsByName(name);
+            res.json(students);
+        } catch (error) {
+            console.error('Error in searchStudentsByName:', error);
+            res.status(500).json({ 
+                error: 'Error interno del servidor',
+                message: error.message 
+            });
+        }
+    }
+
+    // Obtener estadísticas de estudiantes
+    async getStudentStats(req, res) {
+        try {
+            const stats = await StudentService.getStudentStats();
+            res.json(stats);
+        } catch (error) {
+            console.error('Error in getStudentStats:', error);
+            res.status(500).json({ 
+                error: 'Error interno del servidor',
+                message: error.message 
+            });
+        }
+    }
 }
 
-module.exports = StudentController;
+module.exports = new StudentController();

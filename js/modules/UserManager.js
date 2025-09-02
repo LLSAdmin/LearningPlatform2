@@ -204,6 +204,7 @@ class UserManager {
                         Nivel: ${student.level || 'No especificado'}
                         ${student.email ? `• ${student.email}` : ''}
                         ${student.phone ? `• ${student.phone}` : ''}
+                        ${student.created ? `• Creado: ${Utils.formatDate(student.created)}` : ''}
                     </div>
                 </div>
                 <div class="user-actions">

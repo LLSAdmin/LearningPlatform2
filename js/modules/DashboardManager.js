@@ -292,8 +292,10 @@ class DashboardManager {
         
         const formData = new FormData(event.target);
         const studentData = {
-            full_name: formData.get('studentName'),
-            level: formData.get('studentLevel')
+            full_name: formData.get('studentFullName'),
+            level: formData.get('studentLevel'),
+            email: formData.get('studentEmail') || '',
+            phone: formData.get('studentPhone') || ''
         };
 
         try {
