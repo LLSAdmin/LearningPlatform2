@@ -1,32 +1,30 @@
 // Modelo para Teachers - Principio de Responsabilidad Única (SRP)
 class Teacher {
     constructor(data) {
-        this.id = data.id || null;
-        this.username = data.username || '';
+        // ID solo si MongoDB no lo genera automáticamente
+        this.id = data.id || (data._id ? data._id.toString() : null);
         this.name = data.name || '';
+        this.lastname = data.lastname || '';
         this.email = data.email || '';
-        this.age = data.age || null;
-        this.hobbies = data.hobbies || [];
-        this.created_at = data.created_at || new Date().toISOString();
+        this.created = data.created || new Date().toISOString();
     }
 
     // Validación de datos del profesor
     validate() {
         const errors = [];
-        
+
         if (!this.name || this.name.trim().length < 2) {
             errors.push('El nombre debe tener al menos 2 caracteres');
         }
-        
+
+        if (!this.lastname || this.lastname.trim().length < 2) {
+            errors.push('El apellido debe tener al menos 2 caracteres');
+        }
+
         if (!this.email || !this.isValidEmail(this.email)) {
             errors.push('El email debe ser válido');
         }
-        
-        // Username es opcional para compatibilidad con datos existentes
-        if (this.username && this.username.trim().length < 3) {
-            errors.push('El username debe tener al menos 3 caracteres');
-        }
-        
+
         return {
             isValid: errors.length === 0,
             errors
@@ -39,22 +37,41 @@ class Teacher {
         return emailRegex.test(email);
     }
 
+    // Obtener nombre completo
+    getFullName() {
+        return `${this.name} ${this.lastname}`.trim();
+    }
+
     // Convertir a objeto plano para MongoDB
     toObject() {
         return {
-            id: this.id,
-            username: this.username,
             name: this.name,
+            lastname: this.lastname,
             email: this.email,
-            age: this.age,
-            hobbies: this.hobbies,
-            created_at: this.created_at
+            created: this.created
         };
     }
 
     // Crear desde objeto de MongoDB
     static fromObject(data) {
         return new Teacher(data);
+    }
+
+    // Crear un nuevo Teacher con datos mínimos
+    static create(data) {
+        const teacher = new Teacher({
+            name: data.name,
+            lastname: data.lastname,
+            email: data.email,
+            created: new Date().toISOString()
+        });
+
+        const validation = teacher.validate();
+        if (!validation.isValid) {
+            throw new Error(`Datos inválidos: ${validation.errors.join(', ')}`);
+        }
+
+        return teacher;
     }
 }
 
