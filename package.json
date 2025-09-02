@@ -19,10 +19,12 @@
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.7.2",
     "cors": "^2.8.5",
-    "path": "^0.12.7"
+    "dotenv": "^17.2.1",
+    "express": "^4.18.2",
+    "mongodb": "^6.19.0",
+    "path": "^0.12.7",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
@@ -39,4 +41,3 @@
   },
   "homepage": "your-repository-url#readme"
 }
-
