@@ -76,6 +76,19 @@
                         <div>Profesores en la base de datos</div>
                     </div>
                 </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="card-title">Total Estudiantes</div>
+                    </div>
+                    <div class="card-content">
+                        <div style="font-size: 32px; font-weight: 700; color: #ff99cc; margin-bottom: 8px;" id="totalStudents">0</div>
+                        <div>Estudiantes en la base de datos</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Quick Actions -->
@@ -221,8 +234,8 @@
             </div>
             <form id="createStudentForm">
                 <div class="form-group">
-                    <label for="studentName">Nombre Completo:</label>
-                    <input type="text" id="studentName" name="studentName" class="form-input" placeholder="Ingresa el nombre completo" required>
+                    <label for="studentFullName">Nombre Completo:</label>
+                    <input type="text" id="studentFullName" name="studentFullName" class="form-input" placeholder="Ingresa el nombre completo" required>
                 </div>
                 
                 <div class="form-group">
@@ -233,6 +246,16 @@
                         <option value="intermediate">Intermedio</option>
                         <option value="advanced">Avanzado</option>
                     </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentEmail">Email (opcional):</label>
+                    <input type="email" id="studentEmail" name="studentEmail" class="form-input" placeholder="estudiante@ejemplo.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentPhone">Teléfono (opcional):</label>
+                    <input type="tel" id="studentPhone" name="studentPhone" class="form-input" placeholder="+1234567890">
                 </div>
                 
                 <div class="form-actions">
