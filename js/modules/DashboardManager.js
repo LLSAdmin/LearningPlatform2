@@ -65,8 +65,9 @@ class DashboardManager {
             
             teachers.forEach(teacher => {
                 const option = document.createElement('option');
-                option.value = teacher.name;
-                option.textContent = teacher.name;
+                const fullName = teacher.getFullName ? teacher.getFullName() : `${teacher.name || ''} ${teacher.lastname || ''}`.trim();
+                option.value = fullName;
+                option.textContent = fullName;
                 select.appendChild(option);
             });
         });
@@ -271,10 +272,8 @@ class DashboardManager {
         const formData = new FormData(event.target);
         const teacherData = {
             name: formData.get('teacherName'),
-            email: formData.get('teacherEmail'),
-            username: formData.get('teacherUsername'),
-            password: formData.get('teacherPassword'),
-            role: 'teacher'
+            lastname: formData.get('teacherLastname'),
+            email: formData.get('teacherEmail')
         };
 
         try {
