@@ -1,10 +1,11 @@
 // Servicio para Teachers - Principio de Responsabilidad Única (SRP)
 const Teacher = require('../models/Teacher');
 const { getDatabase } = require('../../config/mongodb');
+const { ObjectId } = require('mongodb');
 
 class TeacherService {
     constructor() {
-        this.collectionName = 'Teachers';
+        this.collectionName = 'Teachers'; // Usar minúsculas para nueva colección
     }
 
     // Obtener todos los profesores
@@ -23,7 +24,16 @@ class TeacherService {
     async getTeacherById(id) {
         try {
             const db = getDatabase();
-            const teacher = await db.collection(this.collectionName).findOne({ id: parseInt(id) });
+            let query = {};
+            
+            // Manejar tanto ObjectId como string ID
+            if (ObjectId.isValid(id)) {
+                query = { _id: new ObjectId(id) };
+            } else {
+                query = { id: id };
+            }
+            
+            const teacher = await db.collection(this.collectionName).findOne(query);
             return teacher ? Teacher.fromObject(teacher) : null;
         } catch (error) {
             console.error('Error getting teacher by id:', error);
@@ -34,23 +44,18 @@ class TeacherService {
     // Crear nuevo profesor
     async createTeacher(teacherData) {
         try {
-            // Validar datos
-            const teacher = new Teacher(teacherData);
-            const validation = teacher.validate();
-            
-            if (!validation.isValid) {
-                throw new Error(`Datos inválidos: ${validation.errors.join(', ')}`);
-            }
+            // Crear instancia del Teacher usando el método estático
+            const teacher = Teacher.create(teacherData);
 
-            // Obtener siguiente ID
-            const nextId = await this.getNextId();
-            teacher.id = nextId;
-
-            // Insertar en base de datos
+            // Insertar en base de datos (MongoDB generará automáticamente el _id)
             const db = getDatabase();
             const result = await db.collection(this.collectionName).insertOne(teacher.toObject());
             
-            return Teacher.fromObject({ ...teacher.toObject(), _id: result.insertedId });
+            // Retornar el teacher creado con el _id de MongoDB
+            return Teacher.fromObject({ 
+                ...teacher.toObject(), 
+                _id: result.insertedId 
+            });
         } catch (error) {
             console.error('Error creating teacher:', error);
             throw error;
@@ -60,18 +65,21 @@ class TeacherService {
     // Actualizar profesor
     async updateTeacher(id, updateData) {
         try {
-            // Validar datos
-            const teacher = new Teacher(updateData);
-            const validation = teacher.validate();
-            
-            if (!validation.isValid) {
-                throw new Error(`Datos inválidos: ${validation.errors.join(', ')}`);
+            // Crear instancia del Teacher para validar
+            const teacher = Teacher.create(updateData);
+
+            // Preparar query para actualizar
+            let query = {};
+            if (ObjectId.isValid(id)) {
+                query = { _id: new ObjectId(id) };
+            } else {
+                query = { id: id };
             }
 
             // Actualizar en base de datos
             const db = getDatabase();
             const result = await db.collection(this.collectionName).updateOne(
-                { id: parseInt(id) },
+                query,
                 { $set: teacher.toObject() }
             );
 
@@ -90,7 +98,16 @@ class TeacherService {
     async deleteTeacher(id) {
         try {
             const db = getDatabase();
-            const result = await db.collection(this.collectionName).deleteOne({ id: parseInt(id) });
+            
+            // Preparar query para eliminar
+            let query = {};
+            if (ObjectId.isValid(id)) {
+                query = { _id: new ObjectId(id) };
+            } else {
+                query = { id: id };
+            }
+            
+            const result = await db.collection(this.collectionName).deleteOne(query);
             
             if (result.deletedCount === 0) {
                 throw new Error('Profesor no encontrado');
@@ -103,17 +120,59 @@ class TeacherService {
         }
     }
 
-    // Obtener siguiente ID disponible
-    async getNextId() {
+    // Buscar profesores por email
+    async getTeacherByEmail(email) {
         try {
             const db = getDatabase();
-            const teachers = await db.collection(this.collectionName).find({}).toArray();
-            return teachers.length > 0 ? Math.max(...teachers.map(t => t.id || 0)) + 1 : 1;
+            const teacher = await db.collection(this.collectionName).findOne({ email: email });
+            return teacher ? Teacher.fromObject(teacher) : null;
         } catch (error) {
-            console.error('Error getting next ID:', error);
-            return 1;
+            console.error('Error getting teacher by email:', error);
+            throw new Error('Error al buscar profesor por email');
+        }
+    }
+
+    // Buscar profesores por nombre
+    async searchTeachersByName(name) {
+        try {
+            const db = getDatabase();
+            const teachers = await db.collection(this.collectionName).find({
+                $or: [
+                    { name: { $regex: name, $options: 'i' } },
+                    { lastname: { $regex: name, $options: 'i' } }
+                ]
+            }).toArray();
+            
+            return teachers.map(teacher => Teacher.fromObject(teacher));
+        } catch (error) {
+            console.error('Error searching teachers by name:', error);
+            throw new Error('Error al buscar profesores por nombre');
+        }
+    }
+
+    // Obtener estadísticas de profesores
+    async getTeacherStats() {
+        try {
+            const db = getDatabase();
+            const totalTeachers = await db.collection(this.collectionName).countDocuments();
+            
+            // Profesores creados en el último mes
+            const lastMonth = new Date();
+            lastMonth.setMonth(lastMonth.getMonth() - 1);
+            
+            const recentTeachers = await db.collection(this.collectionName).countDocuments({
+                created: { $gte: lastMonth.toISOString() }
+            });
+
+            return {
+                total: totalTeachers,
+                recent: recentTeachers
+            };
+        } catch (error) {
+            console.error('Error getting teacher stats:', error);
+            throw new Error('Error al obtener estadísticas de profesores');
         }
     }
 }
 
-module.exports = TeacherService;
+module.exports = new TeacherService();
