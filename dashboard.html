@@ -1,857 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Leonor Language School</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(180deg, #66ccff 0%, #ffffff 100%);
-            color: #333;
-            min-height: 100vh;
-        }
-
-        .dashboard-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        .header {
-            background: #ffffff;
-            padding: 16px 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo img {
-            height: 40px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-name {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .user-role {
-            background: #ff99cc;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .logout-btn {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            color: #666;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 14px;
-        }
-
-        .logout-btn:hover {
-            background: #e9ecef;
-            color: #333;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 24px;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .welcome-section {
-            background: linear-gradient(135deg, #66ccff 0%, #ff99cc 100%);
-            color: white;
-            padding: 32px;
-            border-radius: 16px;
-            margin-bottom: 32px;
-            text-align: center;
-        }
-
-        .welcome-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .welcome-subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        /* Dashboard Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .dashboard-card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            background: #ff99cc;
-            color: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .card-content {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* Quick Actions */
-        .quick-actions {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 32px;
-        }
-
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .action-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            padding: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-align: center;
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .action-btn:hover {
-            border-color: #ff99cc;
-            background: #fff5f7;
-            transform: translateY(-2px);
-        }
-
-        .action-btn.primary {
-            background: #ff99cc;
-            color: white;
-            border-color: #ff99cc;
-        }
-
-        .action-btn.primary:hover {
-            background: #ff88bb;
-            border-color: #ff88bb;
-        }
-
-        .action-icon {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-
-        .action-text {
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        /* Classes Section */
-        .classes-section {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Tabs */
-        .tabs-container {
-            margin-bottom: 24px;
-        }
-
-        .tabs {
-            display: flex;
-            border-bottom: 2px solid #f0f0f0;
-            margin-bottom: 16px;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 12px 24px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .tab-btn:hover {
-            color: #66ccff;
-        }
-
-        .tab-btn.active {
-            color: #66ccff;
-            border-bottom-color: #66ccff;
-        }
-
-        /* Table Controls */
-        .table-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .search-box label {
-            font-size: 14px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .search-box input {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
-            width: 250px;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #66ccff;
-            box-shadow: 0 0 0 2px rgba(102, 204, 255, 0.2);
-        }
-
-        /* Table */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .classes-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        .classes-table th {
-            background: #f8f9fa;
-            padding: 16px 12px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-            border-bottom: 2px solid #e9ecef;
-            cursor: pointer;
-            user-select: none;
-            position: relative;
-        }
-
-        .classes-table th:hover {
-            background: #e9ecef;
-        }
-
-        .classes-table th i {
-            margin-left: 8px;
-            opacity: 0.5;
-            font-size: 12px;
-        }
-
-        .classes-table td {
-            padding: 16px 12px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            vertical-align: middle;
-        }
-
-        .classes-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .classes-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* Table Cell Content */
-        .teacher-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .teacher-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #66ccff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .class-name-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .student-count {
-            background: #ff99cc;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        .date-cell {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .date-box {
-            background: #ff6b6b;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-            min-width: 60px;
-        }
-
-        .time-cell {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .time-start {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .time-end {
-            color: #999;
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .action-btn {
-            background: white;
-            border: 1px solid #ddd;
-            color: #666;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .action-btn:hover {
-            background: #f8f9fa;
-            border-color: #66ccff;
-            color: #66ccff;
-        }
-
-        .action-btn.primary {
-            background: #66ccff;
-            border-color: #66ccff;
-            color: white;
-        }
-
-        .action-btn.primary:hover {
-            background: #4db8e6;
-            border-color: #4db8e6;
-        }
-
-        .action-btn.success {
-            background: #28a745;
-            border-color: #28a745;
-            color: white;
-        }
-
-        .action-btn.success:hover {
-            background: #218838;
-            border-color: #1e7e34;
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            color: #ddd;
-            margin-bottom: 16px;
-        }
-
-        .empty-state h3 {
-            font-size: 18px;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .empty-state p {
-            font-size: 14px;
-            color: #666;
-        }
-
-        /* Class Details Modal */
-        .class-detail-item {
-            margin-bottom: 12px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .class-detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .class-detail-item strong {
-            color: #333;
-            font-weight: 600;
-            display: inline-block;
-            min-width: 120px;
-        }
-
-        .feedback-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #e9ecef;
-        }
-
-        .feedback-section h4 {
-            color: #333;
-            margin-bottom: 16px;
-            font-size: 16px;
-        }
-
-        .feedback-item {
-            margin-bottom: 12px;
-            padding: 8px 0;
-        }
-
-        .feedback-item strong {
-            color: #333;
-            font-weight: 600;
-            display: inline-block;
-            min-width: 150px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .create-class-btn {
-            background: #ff99cc;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s ease;
-        }
-
-        .create-class-btn:hover {
-            background: #ff88bb;
-        }
-
-        .classes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 16px;
-        }
-
-        .class-card {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 16px;
-            transition: all 0.2s ease;
-        }
-
-        .class-card:hover {
-            border-color: #ff99cc;
-            box-shadow: 0 4px 12px rgba(255, 153, 204, 0.2);
-        }
-
-        .class-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-
-        .class-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 4px;
-        }
-
-        .class-status {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .status-scheduled {
-            background: #e7f3ff;
-            color: #0c5460;
-        }
-
-        .status-active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-ended {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .class-details {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 12px;
-        }
-
-        .class-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .class-btn {
-            padding: 6px 12px;
-            border: 1px solid #dee2e6;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s ease;
-        }
-
-        .class-btn:hover {
-            border-color: #ff99cc;
-            color: #ff99cc;
-        }
-
-        .class-btn.primary {
-            background: #ff99cc;
-            color: white;
-            border-color: #ff99cc;
-        }
-
-        .class-btn.primary:hover {
-            background: #ff88bb;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .classes-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header {
-                flex-direction: column;
-                gap: 16px;
-                text-align: center;
-            }
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 32px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .modal-header {
-            margin-bottom: 24px;
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        .modal-subtitle {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .form-input, .form-select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.2s ease;
-        }
-
-        .form-input:focus, .form-select:focus {
-            outline: none;
-            border-color: #ff99cc;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 24px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background: #ff99cc;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #ff88bb;
-        }
-
-        .btn-secondary {
-            background: #f8f9fa;
-            color: #666;
-            border: 1px solid #dee2e6;
-        }
-
-        .btn-secondary:hover {
-            background: #e9ecef;
-        }
-
-        /* Admin specific styles */
-        .user-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .tab-btn {
-            padding: 10px 20px;
-            border: none;
-            background: transparent;
-            color: #666;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn.active {
-            color: #ff99cc;
-            border-bottom-color: #ff99cc;
-        }
-
-        .tab-btn:hover {
-            color: #ff99cc;
-        }
-
-        .user-tab-content {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .user-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .user-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            background: #f8f9fa;
-        }
-
-        .user-info {
-            flex: 1;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 4px;
-        }
-
-        .user-details {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .user-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .user-btn {
-            padding: 6px 12px;
-            border: 1px solid #dee2e6;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.2s ease;
-        }
-
-        .user-btn:hover {
-            border-color: #ff99cc;
-            color: #ff99cc;
-        }
-
-        .user-btn.danger {
-            color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .user-btn.danger:hover {
-            background: #fff5f5;
-        }
-    </style>
+    <link rel="stylesheet" href="/style/dashboard.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -863,12 +18,12 @@
             
             <div class="user-info">
                 <div>
-                    <div class="user-name" id="userName">Loading...</div>
-                    <div class="user-role" id="userRole">Loading...</div>
+                    <div class="user-name" id="userName">Cargando...</div>
+                    <div class="user-role" id="userRole">Cargando...</div>
                 </div>
                 <button class="logout-btn" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
-                    Logout
+                    Cerrar Sesión
                 </button>
             </div>
         </div>
@@ -877,8 +32,8 @@
         <div class="main-content">
             <!-- Welcome Section -->
             <div class="welcome-section">
-                <div class="welcome-title">Welcome back!</div>
-                <div class="welcome-subtitle" id="welcomeMessage">Ready to start teaching?</div>
+                <div class="welcome-title">¡Bienvenido de vuelta!</div>
+                <div class="welcome-subtitle" id="welcomeMessage">Listo para empezar?</div>
             </div>
 
             <!-- Dashboard Grid -->
@@ -888,11 +43,11 @@
                         <div class="card-icon">
                             <i class="fas fa-chalkboard"></i>
                         </div>
-                        <div class="card-title">Total Classes</div>
+                        <div class="card-title">Total Clases</div>
                     </div>
                     <div class="card-content">
                         <div style="font-size: 32px; font-weight: 700; color: #ff99cc; margin-bottom: 8px;" id="totalClasses">0</div>
-                        <div>Classes created this month</div>
+                        <div>Clases creadas este mes</div>
                     </div>
                 </div>
 
@@ -901,29 +56,42 @@
                         <div class="card-icon">
                             <i class="fas fa-clock"></i>
                         </div>
-                        <div class="card-title">Teaching Hours</div>
+                        <div class="card-title">Horas de Enseñanza</div>
                     </div>
                     <div class="card-content">
                         <div style="font-size: 32px; font-weight: 700; color: #ff99cc; margin-bottom: 8px;" id="teachingHours">0</div>
-                        <div>Hours taught this month</div>
+                        <div>Horas enseñadas este mes</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-title">Total Profesores</div>
+                    </div>
+                    <div class="card-content">
+                        <div style="font-size: 32px; font-weight: 700; color: #ff99cc; margin-bottom: 8px;" id="totalTeachers">0</div>
+                        <div>Profesores en la base de datos</div>
                     </div>
                 </div>
             </div>
 
             <!-- Quick Actions -->
             <div class="quick-actions">
-                <div class="section-title">Quick Actions</div>
+                <div class="section-title">Acciones Rápidas</div>
                 <div class="actions-grid" id="actionsGrid">
-                    <!-- Actions will be populated based on user role -->
+                    <!-- Las acciones se cargarán dinámicamente -->
                 </div>
             </div>
 
             <!-- Classes Section -->
             <div class="classes-section">
                 <div class="section-header">
-                    <div class="section-title" id="classesSectionTitle">Recent Classes</div>
+                    <div class="section-title" id="classesSectionTitle">Clases Recientes</div>
                     <div id="classesSectionActions">
-                        <!-- Actions will be populated based on user role -->
+                        <!-- Las acciones se cargarán dinámicamente -->
                     </div>
                 </div>
                 
@@ -931,44 +99,37 @@
                 <div class="tabs-container">
                     <div class="tabs">
                         <button class="tab-btn active" onclick="switchTab('upcoming')" id="upcomingTab">
-                            <i class="fas fa-calendar-alt"></i> Upcoming Classes
+                            <i class="fas fa-calendar-alt"></i> Clases Próximas
                         </button>
                         <button class="tab-btn" onclick="switchTab('past')" id="pastTab">
-                            <i class="fas fa-calendar-check"></i> Past Classes
+                            <i class="fas fa-calendar-check"></i> Clases Pasadas
                         </button>
                     </div>
                     
                     <!-- Search and Filter -->
                     <div class="table-controls">
                         <div class="search-box">
-                            <label for="classSearch">Search:</label>
-                            <input type="text" id="classSearch" placeholder="Search classes..." onkeyup="filterClasses()">
+                            <label for="classSearch">Buscar:</label>
+                            <input type="text" id="classSearch" placeholder="Buscar clases..." onkeyup="filterClasses()">
                         </div>
                     </div>
                 </div>
                 
                 <!-- Classes Table -->
                 <div class="table-container">
-                    <table class="classes-table" id="classesTable">
+                    <table class="classes-table">
                         <thead>
                             <tr>
-                                <th onclick="sortTable('teacher_name')">
-                                    Teacher <i class="fas fa-sort"></i>
-                                </th>
-                                <th onclick="sortTable('name')">
-                                    Name <i class="fas fa-sort"></i>
-                                </th>
-                                <th onclick="sortTable('scheduled_date')">
-                                    Date <i class="fas fa-sort"></i>
-                                </th>
-                                <th onclick="sortTable('scheduled_time')">
-                                    Time <i class="fas fa-sort"></i>
-                                </th>
-                                <th>Actions</th>
+                                <th>Nombre de la Clase</th>
+                                <th>Estudiante</th>
+                                <th>Profesor</th>
+                                <th>Fecha y Hora</th>
+                                <th>Duración</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody id="classesTableBody">
-                            <!-- Classes will be loaded here -->
+                            <!-- Las clases se cargarán dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -976,976 +137,156 @@
         </div>
     </div>
 
-    <!-- Create Class Modal -->
+    <!-- Modales -->
+    <!-- Modal de Crear Clase -->
     <div id="createClassModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Create New Class</div>
-                <div class="modal-subtitle">Set up a new class session</div>
+                <h2>Crear Nueva Clase</h2>
+                <span class="close" onclick="closeCreateClassModal()">&times;</span>
             </div>
-            
             <form id="createClassForm">
                 <div class="form-group">
-                    <label class="form-label">Class Name</label>
-                    <input type="text" class="form-input" id="className" placeholder="e.g., Beginner English - Lesson 1" required>
+                    <label for="className">Nombre de la Clase:</label>
+                    <input type="text" id="className" name="className" class="form-input" placeholder="ej. Inglés Básico - Lección 1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="studentName">Nombre del Estudiante:</label>
+                    <input type="text" id="studentName" name="studentName" class="form-input" placeholder="Ingresa el nombre del estudiante" required>
                 </div>
                 
                 <div class="form-group" id="teacherSelectionGroup" style="display: none;">
-                    <label class="form-label">Assign Teacher</label>
-                    <select class="form-select" id="assignedTeacher">
-                        <!-- Teachers will be loaded here -->
+                    <label for="assignedTeacher">Profesor Asignado:</label>
+                    <select id="assignedTeacher" name="assignedTeacher" class="form-input">
+                        <option value="">Seleccionar profesor</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Student Name</label>
-                    <input type="text" class="form-input" id="studentName" placeholder="Enter student name" required>
+                    <label for="classDateTime">Fecha y Hora:</label>
+                    <input type="datetime-local" id="classDateTime" name="classDateTime" class="form-input" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Date & Time</label>
-                    <input type="datetime-local" class="form-input" id="classDateTime" required>
+                    <label for="classDuration">Duración (minutos):</label>
+                    <input type="number" id="classDuration" name="classDuration" class="form-input" value="60" min="15" max="180" required>
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label">Duration (minutes)</label>
-                    <select class="form-select" id="classDuration">
-                        <option value="30">30 minutes</option>
-                        <option value="45">45 minutes</option>
-                        <option value="60" selected>60 minutes</option>
-                        <option value="90">90 minutes</option>
-                    </select>
-                </div>
-                
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeCreateClassModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Class</button>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCreateClassModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Clase</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Join Class Modal -->
-    <div id="joinClassModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Join Class</div>
-                <div class="modal-subtitle">Enter the class session URL or code</div>
-            </div>
-            
-            <form id="joinClassForm">
-                <div class="form-group">
-                    <label class="form-label">Session URL or Code</label>
-                    <input type="text" class="form-input" id="sessionCode" placeholder="Enter session URL or code" required>
-                </div>
-                
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeJoinClassModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Join Class</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Create Teacher Modal -->
+    <!-- Modal de Crear Profesor -->
     <div id="createTeacherModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Create New Teacher</div>
-                <div class="modal-subtitle">Add a new teacher to the platform</div>
+                <h2>Agregar Nuevo Profesor</h2>
+                <span class="close" onclick="closeCreateTeacherModal()">&times;</span>
             </div>
-            
             <form id="createTeacherForm">
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="teacherUsername" placeholder="Enter username" required>
+                    <label for="teacherName">Nombre Completo:</label>
+                    <input type="text" id="teacherName" name="teacherName" class="form-input" placeholder="Ingresa el nombre completo" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="teacherName" placeholder="Enter full name" required>
+                    <label for="teacherEmail">Email:</label>
+                    <input type="email" id="teacherEmail" name="teacherEmail" class="form-input" placeholder="profesor@ejemplo.com" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="teacherEmail" placeholder="Enter email address" required>
+                    <label for="teacherUsername">Nombre de Usuario:</label>
+                    <input type="text" id="teacherUsername" name="teacherUsername" class="form-input" placeholder="nombre_usuario" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="teacherPassword" placeholder="Enter password" required>
+                    <label for="teacherPassword">Contraseña:</label>
+                    <input type="password" id="teacherPassword" name="teacherPassword" class="form-input" placeholder="Contraseña segura" required>
                 </div>
                 
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeCreateTeacherModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Teacher</button>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCreateTeacherModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Profesor</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Create Student Modal -->
+    <!-- Modal de Crear Estudiante -->
     <div id="createStudentModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Create New Student</div>
-                <div class="modal-subtitle">Add a new student to the platform</div>
+                <h2>Agregar Nuevo Estudiante</h2>
+                <span class="close" onclick="closeCreateStudentModal()">&times;</span>
             </div>
-            
             <form id="createStudentForm">
                 <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="studentUsername" placeholder="Enter username" required>
+                    <label for="studentName">Nombre Completo:</label>
+                    <input type="text" id="studentName" name="studentName" class="form-input" placeholder="Ingresa el nombre completo" required>
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="studentName" placeholder="Enter full name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="studentEmail" placeholder="Enter email address" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="studentPassword" placeholder="Enter password" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Level</label>
-                    <select class="form-select" id="studentLevel">
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
+                    <label for="studentLevel">Nivel:</label>
+                    <select id="studentLevel" name="studentLevel" class="form-input" required>
+                        <option value="">Seleccionar nivel</option>
+                        <option value="beginner">Principiante</option>
+                        <option value="intermediate">Intermedio</option>
+                        <option value="advanced">Avanzado</option>
                     </select>
                 </div>
                 
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeCreateStudentModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create Student</button>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCreateStudentModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Crear Estudiante</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Manage Users Modal -->
-    <div id="manageUsersModal" class="modal">
-        <div class="modal-content" style="max-width: 800px;">
+    <!-- Modal de Gestión de Usuarios -->
+    <div id="userManagementModal" class="modal">
+        <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Manage Users</div>
-                <div class="modal-subtitle">View and manage all platform users</div>
+                <h2>Gestión de Usuarios</h2>
+                <span class="close" onclick="closeUserManagementModal()">&times;</span>
             </div>
-            
-            <div class="user-tabs">
-                <button class="tab-btn active" onclick="showUserTab('teachers')">Teachers</button>
-                <button class="tab-btn" onclick="showUserTab('students')">Students</button>
-            </div>
-            
-            <div id="teachersTab" class="user-tab-content">
-                <div class="user-list" id="teachersList">
-                    <!-- Teachers will be loaded here -->
+            <div class="modal-body">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchUserTab('teachers')" id="teachersTab">
+                        <i class="fas fa-chalkboard-teacher"></i> Profesores
+                    </button>
+                    <button class="tab-btn" onclick="switchUserTab('students')" id="studentsTab">
+                        <i class="fas fa-user-graduate"></i> Estudiantes
+                    </button>
                 </div>
-            </div>
-            
-            <div id="studentsTab" class="user-tab-content" style="display: none;">
-                <div class="user-list" id="studentsList">
-                    <!-- Students will be loaded here -->
+                
+                <div class="tab-content" id="teachersTab" style="display: block;">
+                    <div class="users-list" id="teachersList">
+                        <!-- Los profesores se cargarán dinámicamente -->
+                    </div>
                 </div>
-            </div>
-            
-            <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" onclick="closeManageUsersModal()">Close</button>
+                
+                <div class="tab-content" id="studentsTab" style="display: none;">
+                    <div class="users-list" id="studentsList">
+                        <!-- Los estudiantes se cargarán dinámicamente -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        let userData = null;
-        let classes = [];
-        let currentTab = 'upcoming';
-        let sortColumn = '';
-        let sortDirection = 'asc';
-
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUserData();
-            loadClasses();
-            updateDashboardStats();
-            setupRoleBasedUI();
-        });
-
-        function loadUserData() {
-            const stored = localStorage.getItem('userData');
-            if (!stored) {
-                const adminUser = { id: 'admin-1', username: 'admin', name: 'Administrator', email: 'admin@leonorlanguageschool.com', role: 'admin' };
-                localStorage.setItem('userData', JSON.stringify(adminUser));
-            }
-
-            userData = JSON.parse(localStorage.getItem('userData'));
-            document.getElementById('userName').textContent = userData.name;
-            
-            // Set role display
-            const roleText = userData.role === 'admin' ? 'Administrator' : 
-                           userData.role === 'teacher' ? 'Teacher' : 'Student';
-            document.getElementById('userRole').textContent = roleText;
-            
-            // Update page title based on role
-            const dashboardTitle = userData.role === 'admin' ? 'Admin Dashboard' : 
-                                 userData.role === 'teacher' ? 'Teacher Dashboard' : 'Student Dashboard';
-            document.title = dashboardTitle + ' - Leonor Language School';
-            
-            const welcomeMessage = userData.role === 'admin' 
-                ? 'Welcome, Administrator! Manage your platform.' 
-                : userData.role === 'teacher' 
-                ? 'Ready to start teaching?' 
-                : 'Ready to learn?';
-            document.getElementById('welcomeMessage').textContent = welcomeMessage;
-        }
-
-        async function loadClasses() {
-            try {
-                const response = await fetch('api/classes.php');
-                if (response.ok) {
-                    classes = await response.json();
-                } else {
-                    console.error('Failed to load classes:', response.statusText);
-                    classes = [];
-                }
-            } catch (error) {
-                console.error('Error loading classes:', error);
-                classes = [];
-            }
-            renderClasses();
-        }
-
-        function renderClasses() {
-            const tbody = document.getElementById('classesTableBody');
-            tbody.innerHTML = '';
-
-            // Filter classes based on user role and current tab
-            let filteredClasses = classes;
-            if (userData.role === 'teacher') {
-                filteredClasses = classes.filter(cls => cls.teacher_name === userData.name);
-            } else if (userData.role === 'student') {
-                filteredClasses = classes.filter(cls => cls.student_name === userData.name);
-            }
-
-            // Filter by tab (upcoming vs past)
-            const now = new Date();
-            if (currentTab === 'upcoming') {
-                filteredClasses = filteredClasses.filter(cls => {
-                    const classDate = new Date(cls.scheduled_date + 'T' + cls.scheduled_time);
-                    return classDate > now && cls.status !== 'ended';
-                });
-            } else {
-                filteredClasses = filteredClasses.filter(cls => {
-                    const classDate = new Date(cls.scheduled_date + 'T' + cls.scheduled_time);
-                    return classDate <= now || cls.status === 'ended';
-                });
-            }
-
-            if (filteredClasses.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            <i class="fas fa-calendar-times"></i>
-                            <h3>No ${currentTab} classes found</h3>
-                            <p>${currentTab === 'upcoming' ? 'Create your first class to get started!' : 'No completed classes yet.'}</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            filteredClasses.forEach(cls => {
-                const row = document.createElement('tr');
-                
-                const date = new Date(cls.scheduled_date + 'T' + cls.scheduled_time);
-                const endTime = new Date(date.getTime() + (cls.duration * 60000));
-                
-                const teacherInitials = cls.teacher_name ? cls.teacher_name.split(' ').map(n => n[0]).join('').toUpperCase() : 'T';
-                const dayName = date.toLocaleDateString('en', { weekday: 'short' });
-                const dayNumber = date.getDate();
-                const monthName = date.toLocaleDateString('en', { month: 'short' });
-                const year = date.getFullYear();
-                
-                row.innerHTML = `
-                    <td>
-                        <div class="teacher-cell">
-                            <div class="teacher-avatar">${teacherInitials}</div>
-                            <span>${cls.teacher_name || 'N/A'}</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="class-name-cell">
-                            <span>${cls.name}</span>
-                            <div class="student-count">
-                                <i class="fas fa-user"></i> 1
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="date-cell">
-                            <i class="fas fa-calendar"></i>
-                            <div class="date-box">
-                                <div>${dayName} ${dayNumber}</div>
-                                <div>${monthName} ${year}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="time-cell">
-                            <div class="time-start">Start: ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                            <div class="time-end">End: ${endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            ${currentTab === 'upcoming' ? `
-                                <button class="action-btn" onclick="editClass(${cls.id})" title="Edit">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button class="action-btn" onclick="addToCalendar(${cls.id})" title="Add to Calendar">
-                                    <i class="fas fa-calendar-plus"></i> Add to calendar
-                                </button>
-                                <button class="action-btn" onclick="copyStudentLink(${cls.id})" title="Copy Student Link">
-                                    <i class="fas fa-users"></i> Student link
-                                </button>
-                                <button class="action-btn primary" onclick="enterClass(${cls.id})" title="Enter Class">
-                                    <i class="fas fa-arrow-right"></i> Enter class
-                                </button>
-                            ` : `
-                                <button class="action-btn" onclick="viewClassDetails(${cls.id})" title="View Details">
-                                    <i class="fas fa-eye"></i> View Details
-                                </button>
-                                ${userData.role === 'admin' ? `
-                                    <button class="action-btn" onclick="editClass(${cls.id})" title="Edit">
-                                        <i class="fas fa-edit"></i> Edit
-                                    </button>
-                                ` : ''}
-                            `}
-                        </div>
-                    </td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
-
-        function updateDashboardStats() {
-            // Filter classes based on user role for stats
-            let filteredClasses = classes;
-            if (userData.role === 'teacher') {
-                filteredClasses = classes.filter(cls => cls.teacher_name === userData.name);
-            } else if (userData.role === 'student') {
-                filteredClasses = classes.filter(cls => cls.student_name === userData.name);
-            }
-            
-            document.getElementById('totalClasses').textContent = filteredClasses.length;
-            
-            // Calculate teaching hours (demo data)
-            const totalMinutes = filteredClasses.reduce((sum, cls) => sum + cls.duration, 0);
-            const totalHours = Math.round(totalMinutes / 60 * 10) / 10;
-            document.getElementById('teachingHours').textContent = totalHours;
-        }
-
-        function setupRoleBasedUI() {
-            const actionsGrid = document.getElementById('actionsGrid');
-            const classesSectionTitle = document.getElementById('classesSectionTitle');
-            const classesSectionActions = document.getElementById('classesSectionActions');
-            
-            if (userData.role === 'admin') {
-                // Admin actions
-                actionsGrid.innerHTML = `
-                    <button class="action-btn primary" onclick="createClass()">
-                        <div class="action-icon"><i class="fas fa-plus"></i></div>
-                        <div class="action-text">Create Class</div>
-                    </button>
-                    <button class="action-btn" onclick="createTeacher()">
-                        <div class="action-icon"><i class="fas fa-user-plus"></i></div>
-                        <div class="action-text">Create Teacher</div>
-                    </button>
-                    <button class="action-btn" onclick="createStudent()">
-                        <div class="action-icon"><i class="fas fa-user-graduate"></i></div>
-                        <div class="action-text">Create Student</div>
-                    </button>
-                    <button class="action-btn" onclick="manageUsers()">
-                        <div class="action-icon"><i class="fas fa-users"></i></div>
-                        <div class="action-text">Manage Users</div>
-                    </button>
-                `;
-                
-                classesSectionTitle.textContent = 'All Classes';
-                classesSectionActions.innerHTML = `
-                    <button class="create-class-btn" onclick="createClass()">
-                        <i class="fas fa-plus"></i> Create Class
-                    </button>
-                `;
-            } else if (userData.role === 'teacher') {
-                // Teacher actions
-                actionsGrid.innerHTML = `
-                    <button class="action-btn primary" onclick="createClass()">
-                        <div class="action-icon"><i class="fas fa-plus"></i></div>
-                        <div class="action-text">Create New Class</div>
-                    </button>
-                    <button class="action-btn" onclick="joinClass()">
-                        <div class="action-icon"><i class="fas fa-sign-in-alt"></i></div>
-                        <div class="action-text">Join Class</div>
-                    </button>
-                    <button class="action-btn" onclick="viewSchedule()">
-                        <div class="action-icon"><i class="fas fa-calendar"></i></div>
-                        <div class="action-text">View Schedule</div>
-                    </button>
-                    <button class="action-btn" onclick="viewReports()">
-                        <div class="action-icon"><i class="fas fa-chart-bar"></i></div>
-                        <div class="action-text">View Reports</div>
-                    </button>
-                `;
-                
-                classesSectionTitle.textContent = 'My Classes';
-                classesSectionActions.innerHTML = `
-                    <button class="create-class-btn" onclick="createClass()">
-                        <i class="fas fa-plus"></i> Create Class
-                    </button>
-                `;
-            } else {
-                // Student actions
-                actionsGrid.innerHTML = `
-                    <button class="action-btn primary" onclick="joinClass()">
-                        <div class="action-icon"><i class="fas fa-sign-in-alt"></i></div>
-                        <div class="action-text">Join Class</div>
-                    </button>
-                    <button class="action-btn" onclick="viewSchedule()">
-                        <div class="action-icon"><i class="fas fa-calendar"></i></div>
-                        <div class="action-text">View Schedule</div>
-                    </button>
-                    <button class="action-btn" onclick="viewReports()">
-                        <div class="action-icon"><i class="fas fa-chart-bar"></i></div>
-                        <div class="action-text">View Progress</div>
-                    </button>
-                `;
-                
-                classesSectionTitle.textContent = 'My Classes';
-                classesSectionActions.innerHTML = '';
-            }
-        }
-
-        function createClass() {
-            document.getElementById('createClassModal').style.display = 'block';
-            // Set default datetime to now + 1 hour
-            const now = new Date();
-            now.setHours(now.getHours() + 1);
-            document.getElementById('classDateTime').value = now.toISOString().slice(0, 16);
-            
-            // Show teacher selection for admin
-            if (userData.role === 'admin') {
-                document.getElementById('teacherSelectionGroup').style.display = 'block';
-                loadTeachersForClass();
-            } else {
-                document.getElementById('teacherSelectionGroup').style.display = 'none';
-            }
-        }
-
-        async function loadTeachersForClass() {
-            try {
-                const response = await fetch('api/teachers.php');
-                const select = document.getElementById('assignedTeacher');
-                select.innerHTML = '<option value="">Select a teacher</option>';
-                
-                if (response.ok) {
-                    const teachers = await response.json();
-                    teachers.forEach(teacher => {
-                        const option = document.createElement('option');
-                        option.value = teacher.name;
-                        option.textContent = teacher.name;
-                        select.appendChild(option);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading teachers:', error);
-            }
-        }
-
-        function closeCreateClassModal() {
-            document.getElementById('createClassModal').style.display = 'none';
-            document.getElementById('createClassForm').reset();
-        }
-
-        function joinClass() {
-            document.getElementById('joinClassModal').style.display = 'block';
-        }
-
-        function closeJoinClassModal() {
-            document.getElementById('joinClassModal').style.display = 'none';
-            document.getElementById('joinClassForm').reset();
-        }
-
-        function enterClass(classId) {
-            // Redirect to classroom with classId parameter
-            window.location.href = `classroom.html?classId=${classId}`;
-        }
-
-        // Tab switching functionality
-        function switchTab(tab) {
-            currentTab = tab;
-            
-            // Update tab buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tab + 'Tab').classList.add('active');
-            
-            // Re-render classes with new filter
-            renderClasses();
-        }
-
-        // Table sorting functionality
-        function sortTable(column) {
-            if (sortColumn === column) {
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-            } else {
-                sortColumn = column;
-                sortDirection = 'asc';
-            }
-            
-            // Sort classes array
-            classes.sort((a, b) => {
-                let aVal = a[column];
-                let bVal = b[column];
-                
-                if (column === 'scheduled_date' || column === 'scheduled_time') {
-                    aVal = new Date(a.scheduled_date + 'T' + a.scheduled_time);
-                    bVal = new Date(b.scheduled_date + 'T' + b.scheduled_time);
-                }
-                
-                if (sortDirection === 'asc') {
-                    return aVal > bVal ? 1 : -1;
-                } else {
-                    return aVal < bVal ? 1 : -1;
-                }
-            });
-            
-            renderClasses();
-        }
-
-        // Search functionality
-        function filterClasses() {
-            const searchTerm = document.getElementById('classSearch').value.toLowerCase();
-            
-            // Filter classes based on search term
-            const filteredClasses = classes.filter(cls => 
-                cls.name.toLowerCase().includes(searchTerm) ||
-                cls.teacher_name.toLowerCase().includes(searchTerm) ||
-                cls.student_name.toLowerCase().includes(searchTerm)
-            );
-            
-            // Temporarily replace classes array for rendering
-            const originalClasses = classes;
-            classes = filteredClasses;
-            renderClasses();
-            classes = originalClasses;
-        }
-
-        // New action functions
-        function addToCalendar(classId) {
-            const cls = classes.find(c => c.id === classId);
-            if (cls) {
-                const startDate = new Date(cls.scheduled_date + 'T' + cls.scheduled_time);
-                const endDate = new Date(startDate.getTime() + (cls.duration * 60000));
-                
-                const startISO = startDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-                const endISO = endDate.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-                
-                const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(cls.name)}&dates=${startISO}/${endISO}&details=${encodeURIComponent(`Class with ${cls.student_name}`)}`;
-                
-                window.open(calendarUrl, '_blank');
-            }
-        }
-
-        function copyStudentLink(classId) {
-            const cls = classes.find(c => c.id === classId);
-            if (cls) {
-                const studentLink = `${window.location.origin}/classroom.html?classId=${classId}&role=student`;
-                navigator.clipboard.writeText(studentLink).then(() => {
-                    alert('Student link copied to clipboard!');
-                }).catch(() => {
-                    // Fallback for older browsers
-                    const textArea = document.createElement('textarea');
-                    textArea.value = studentLink;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    alert('Student link copied to clipboard!');
-                });
-            }
-        }
-
-        function viewSchedule() {
-            alert('Schedule view coming soon!');
-        }
-
-        function viewReports() {
-            alert('Reports view coming soon!');
-        }
-
-        function editClass(classId) {
-            alert('Edit class functionality coming soon!');
-        }
-
-        function viewClassDetails(classId) {
-            const cls = classes.find(c => c.id === classId);
-            if (!cls) return;
-            
-            const date = new Date(cls.scheduled_date + 'T' + cls.scheduled_time);
-            const endTime = new Date(date.getTime() + (cls.duration * 60000));
-            
-            let feedbackHtml = '';
-            if (cls.feedback) {
-                feedbackHtml = `
-                    <div class="feedback-section">
-                        <h4>Class Feedback</h4>
-                        <div class="feedback-item">
-                            <strong>Student Progress:</strong> ${cls.feedback.student_progress || 'N/A'}
-                        </div>
-                        <div class="feedback-item">
-                            <strong>Areas for Improvement:</strong> ${cls.feedback.areas_for_improvement || 'N/A'}
-                        </div>
-                        <div class="feedback-item">
-                            <strong>Homework Assigned:</strong> ${cls.feedback.homework || 'N/A'}
-                        </div>
-                        <div class="feedback-item">
-                            <strong>Notes:</strong> ${cls.feedback.notes || 'N/A'}
-                        </div>
-                    </div>
-                `;
-            }
-            
-            const modalHtml = `
-                <div class="modal" id="classDetailsModal" style="display: block;">
-                    <div class="modal-content" style="max-width: 600px;">
-                        <div class="modal-header">
-                            <h3>Class Details</h3>
-                            <button class="close-btn" onclick="closeClassDetailsModal()">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="class-detail-item">
-                                <strong>Class Name:</strong> ${cls.name}
-                            </div>
-                            <div class="class-detail-item">
-                                <strong>Teacher:</strong> ${cls.teacher_name}
-                            </div>
-                            <div class="class-detail-item">
-                                <strong>Student:</strong> ${cls.student_name}
-                            </div>
-                            <div class="class-detail-item">
-                                <strong>Date:</strong> ${date.toLocaleDateString()}
-                            </div>
-                            <div class="class-detail-item">
-                                <strong>Time:</strong> ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} - ${endTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                            </div>
-                            <div class="class-detail-item">
-                                <strong>Duration:</strong> ${cls.duration} minutes
-                            </div>
-                            <div class="class-detail-item">
-                                <strong>Status:</strong> <span class="status-${cls.status}">${cls.status.charAt(0).toUpperCase() + cls.status.slice(1)}</span>
-                            </div>
-                            ${feedbackHtml}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Add modal to page
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-        }
-
-        function closeClassDetailsModal() {
-            const modal = document.getElementById('classDetailsModal');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        async function deleteClass(classId) {
-            if (confirm('Are you sure you want to delete this class?')) {
-                try {
-                    const response = await fetch(`api/classes.php?id=${classId}`, {
-                        method: 'DELETE'
-                    });
-                    
-                    if (response.ok) {
-                        await loadClasses();
-                        updateDashboardStats();
-                        alert('Class deleted successfully!');
-                    } else {
-                        const error = await response.json();
-                        alert('Error deleting class: ' + error.error);
-                    }
-                } catch (error) {
-                    console.error('Error deleting class:', error);
-                    alert('Error deleting class. Please try again.');
-                }
-            }
-        }
-
-        // Admin functions
-        function createTeacher() {
-            document.getElementById('createTeacherModal').style.display = 'block';
-        }
-
-        function closeCreateTeacherModal() {
-            document.getElementById('createTeacherModal').style.display = 'none';
-            document.getElementById('createTeacherForm').reset();
-        }
-
-        function createStudent() {
-            document.getElementById('createStudentModal').style.display = 'block';
-        }
-
-        function closeCreateStudentModal() {
-            document.getElementById('createStudentModal').style.display = 'none';
-            document.getElementById('createStudentForm').reset();
-        }
-
-        function manageUsers() {
-            document.getElementById('manageUsersModal').style.display = 'block';
-            loadUsers();
-        }
-
-        function closeManageUsersModal() {
-            document.getElementById('manageUsersModal').style.display = 'none';
-        }
-
-        function showUserTab(tab) {
-            // Hide all tabs
-            document.querySelectorAll('.user-tab-content').forEach(t => t.style.display = 'none');
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Show selected tab
-            document.getElementById(tab + 'Tab').style.display = 'block';
-            event.target.classList.add('active');
-        }
-
-        async function loadUsers() {
-            try {
-                // Load teachers
-                const teachersResponse = await fetch('api/teachers.php');
-                const teachersList = document.getElementById('teachersList');
-                teachersList.innerHTML = '';
-                
-                if (teachersResponse.ok) {
-                    const teachers = await teachersResponse.json();
-                    teachers.forEach(teacher => {
-                        const userItem = document.createElement('div');
-                        userItem.className = 'user-item';
-                        userItem.innerHTML = `
-                            <div class="user-info">
-                                <div class="user-name">${teacher.name}</div>
-                                <div class="user-details">${teacher.username} • ${teacher.email}</div>
-                            </div>
-                            <div class="user-actions">
-                                <button class="user-btn" onclick="editUser('teacher', ${teacher.id})">Edit</button>
-                                <button class="user-btn danger" onclick="deleteUser('teacher', ${teacher.id})">Delete</button>
-                            </div>
-                        `;
-                        teachersList.appendChild(userItem);
-                    });
-                }
-                
-                // Load students
-                const studentsResponse = await fetch('api/students.php');
-                const studentsList = document.getElementById('studentsList');
-                studentsList.innerHTML = '';
-                
-                if (studentsResponse.ok) {
-                    const students = await studentsResponse.json();
-                    students.forEach(student => {
-                        const userItem = document.createElement('div');
-                        userItem.className = 'user-item';
-                        userItem.innerHTML = `
-                            <div class="user-info">
-                                <div class="user-name">${student.full_name}</div>
-                                <div class="user-details">${student.full_name} • ${student.level}</div>
-                            </div>
-                            <div class="user-actions">
-                                <button class="user-btn" onclick="editUser('student', ${student.id})">Edit</button>
-                                <button class="user-btn danger" onclick="deleteUser('student', ${student.id})">Delete</button>
-                            </div>
-                        `;
-                        studentsList.appendChild(userItem);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading users:', error);
-            }
-        }
-
-        function editUser(type, id) {
-            alert(`Edit ${type} functionality coming soon!`);
-        }
-
-        async function deleteUser(type, id) {
-            if (confirm(`Are you sure you want to delete this ${type}?`)) {
-                try {
-                    const endpoint = type === 'teacher' ? 'api/teachers.php' : 'api/students.php';
-                    const response = await fetch(`${endpoint}?id=${id}`, {
-                        method: 'DELETE'
-                    });
-                    
-                    if (response.ok) {
-                        await loadUsers();
-                        alert(`${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully!`);
-                    } else {
-                        const error = await response.json();
-                        alert(`Error deleting ${type}: ` + error.error);
-                    }
-                } catch (error) {
-                    console.error(`Error deleting ${type}:`, error);
-                    alert(`Error deleting ${type}. Please try again.`);
-                }
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('userData');
-            localStorage.removeItem('currentClass');
-            window.location.href = 'index.html';
-        }
-
-        // Form handlers
-        document.getElementById('createClassForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const assignedTeacher = userData.role === 'admin' 
-                ? document.getElementById('assignedTeacher').value 
-                : userData.name;
-            
-            if (userData.role === 'admin' && !assignedTeacher) {
-                alert('Please select a teacher for this class.');
-                return;
-            }
-            
-            const newClass = {
-                name: document.getElementById('className').value,
-                student_name: document.getElementById('studentName').value,
-                teacher_name: assignedTeacher,
-                scheduled_date: document.getElementById('classDateTime').value.split('T')[0],
-                scheduled_time: document.getElementById('classDateTime').value.split('T')[1],
-                duration: parseInt(document.getElementById('classDuration').value),
-                status: 'scheduled'
-            };
-            
-            try {
-                const response = await fetch('api/classes.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newClass)
-                });
-                
-                if (response.ok) {
-                    closeCreateClassModal();
-                    await loadClasses();
-                    updateDashboardStats();
-                    alert('Class created successfully!');
-                } else {
-                    const error = await response.json();
-                    alert('Error creating class: ' + error.error);
-                }
-            } catch (error) {
-                console.error('Error creating class:', error);
-                alert('Error creating class. Please try again.');
-            }
-        });
-
-        document.getElementById('joinClassForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const sessionCode = document.getElementById('sessionCode').value;
-            if (sessionCode.trim()) {
-                // In a real app, this would validate the session code
-                alert('Joining class session...');
-                closeJoinClassModal();
-            }
-        });
-
-        // Teacher creation form
-        document.getElementById('createTeacherForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const newTeacher = {
-                username: document.getElementById('teacherUsername').value,
-                name: document.getElementById('teacherName').value,
-                email: document.getElementById('teacherEmail').value,
-                password: document.getElementById('teacherPassword').value,
-                role: 'teacher'
-            };
-            
-            try {
-                const response = await fetch('api/teachers.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newTeacher)
-                });
-                
-                if (response.ok) {
-                    closeCreateTeacherModal();
-                    alert('Teacher created successfully!');
-                } else {
-                    const error = await response.json();
-                    alert('Error creating teacher: ' + error.error);
-                }
-            } catch (error) {
-                console.error('Error creating teacher:', error);
-                alert('Error creating teacher. Please try again.');
-            }
-        });
-
-        // Student creation form
-        document.getElementById('createStudentForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const newStudent = {
-                full_name: document.getElementById('studentName').value,
-                level: document.getElementById('studentLevel').value
-            };
-            
-            try {
-                const response = await fetch('api/students.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newStudent)
-                });
-                
-                if (response.ok) {
-                    closeCreateStudentModal();
-                    alert('Student created successfully!');
-                } else {
-                    const error = await response.json();
-                    alert('Error creating student: ' + error.error);
-                }
-            } catch (error) {
-                console.error('Error creating student:', error);
-                alert('Error creating student. Please try again.');
-            }
-        });
-
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
-    </script>
+    <!-- Scripts Modulares -->
+    <script src="js/utils/Utils.js"></script>
+    <script src="js/services/ApiService.js"></script>
+    <script src="js/services/DataService.js"></script>
+    <script src="js/modules/UserManager.js"></script>
+    <script src="js/modules/ClassManager.js"></script>
+    <script src="js/modules/DashboardManager.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>
-
