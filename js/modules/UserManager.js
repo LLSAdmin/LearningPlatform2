@@ -167,11 +167,10 @@ class UserManager {
             userItem.className = 'user-item';
             userItem.innerHTML = `
                 <div class="user-info">
-                    <div class="user-name">${teacher.name || 'Sin nombre'}</div>
+                    <div class="user-name">${teacher.getFullName ? teacher.getFullName() : `${teacher.name || ''} ${teacher.lastname || ''}`.trim()}</div>
                     <div class="user-details">
                         ${teacher.email || 'Sin email'} 
-                        ${teacher.age ? `• Edad: ${teacher.age}` : ''}
-                        ${teacher.hobbies && teacher.hobbies.length > 0 ? `• Hobbies: ${teacher.hobbies.join(', ')}` : ''}
+                        ${teacher.created ? `• Creado: ${Utils.formatDate(teacher.created)}` : ''}
                     </div>
                 </div>
                 <div class="user-actions">
