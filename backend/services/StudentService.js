@@ -4,7 +4,7 @@ const { getDatabase } = require('../../config/mongodb');
 
 class StudentService {
     constructor() {
-        this.collectionName = 'students';
+        this.collectionName = 'Students';
     }
 
     // Obtener todos los estudiantes
